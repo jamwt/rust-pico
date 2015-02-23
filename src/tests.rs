@@ -45,6 +45,7 @@ fn test_request_parse() {
             assert_eq!(r.version, Version(1, 1));
             assert_eq!(s(r.path.0), "/hoge");
             assert_eq!(s(r.method.0), "GET");
+            assert_eq!(s(r.raw), "GET /hoge HTTP/1.1\r\nHost: example.com\r\nCookie: \r\n\r\n");
         }
     );
 }
@@ -62,6 +63,8 @@ fn test_response_parse() {
             assert_eq!(r.version, Version(1, 1));
             assert_eq!(r.status.0, 200);
             assert_eq!(s(r.reason), "OK");
+            // Does not include body!
+            assert_eq!(s(r.raw), "HTTP/1.1 200 OK\r\nContent-Length: 14\r\n\r\n");
         }
     );
 }
